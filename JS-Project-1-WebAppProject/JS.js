@@ -1,3 +1,4 @@
+
 let text = document.querySelector('#inputbar');
 console.log(text)
 function searchMovieData() {
@@ -6,22 +7,38 @@ function searchMovieData() {
     return response.json();
   })
   .then(json=> {
-    json.Search.forEach(movie=>addImage(movie.Poster))
-    console.log(json)
+    let outerContainer = document.querySelector('#searchingresult');
+    removeChildren(outerContainer)
+    json.Search.forEach(movie=>addMovieData(movie))
+    return console.log(json)
   })
 };
 
-function addImage(moviesUrl) {
-  let container = document.querySelector('#searchingresult');
-  let newImageEl = document.createElement("img");
-  newImageEl.src = moviesUrl;
-  container.appendChild(newImageEl);
-};
+function addMovieData(movie) {
+  let outerContainer = document.querySelector('#searchingresult');
+  let movieCard = document.createElement('div');
+  movieCard.classList.add("movieCardAppear");
+  let moviePoster = document.createElement('img');
+  moviePoster.src = movie.Poster;
+  moviePoster.classList.add("moviePosterAppear");
+  let movieTitle = document.createElement('p');
+  movieTitle.innerHTML = movie.Title;
+  outerContainer.appendChild(movieCard);
+  movieCard.appendChild(moviePoster);
+  movieCard.appendChild(movieTitle);
+}
+
+function removeChildren(element) {
+  let child = element.lastElementChild;
+  while(child) {
+    element.removeChild(child);
+    child = element.lastElementChild;
+  }
+}
 
 document.addEventListener('DOMContentLoaded', function() {
   searchMovieData();
 });
-
 
 
 
